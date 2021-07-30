@@ -1,8 +1,8 @@
-package com.example.demo.service;
+package com.example.demo.service.nat;
 
 import com.example.demo.builder.NativeGeneralService;
-import com.example.demo.builder.QueryFilter;
 import com.example.demo.dto.CarDTO;
+import com.example.demo.service.CarFilter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;

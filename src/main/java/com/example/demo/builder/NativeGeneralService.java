@@ -1,5 +1,6 @@
 package com.example.demo.builder;
 
+import com.example.demo.dto.PageDTO;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
@@ -45,8 +46,20 @@ public abstract class NativeGeneralService<FILTER extends QueryFilter, DTO> {
 
     protected abstract String getSql(FILTER filterDto);
 
+
+    public PageDTO<DTO> getPage(FILTER filterDto) {
+        List<DTO> list = list(filterDto);
+        long count = count(filterDto);
+        PageDTO<DTO> page = new PageDTO<>();
+
+        page.setPage(filterDto.getPage());
+        page.setData(list);
+        page.setTotalElements(count);
+        return page;
+    }
+
     @Transactional
-    public List<DTO> list(FILTER filterDto) {
+    private List<DTO> list(FILTER filterDto) {
 
         SQLPartWithParams queryWithWhereAndOrderBy = getQueryWithWhereAndOrderBy(filterDto);
         MapSqlParameterSource paramsMap = queryWithWhereAndOrderBy.getMapSqlParameterSource();
@@ -64,7 +77,7 @@ public abstract class NativeGeneralService<FILTER extends QueryFilter, DTO> {
         return namedParameterJdbcTemplate.query(finalSql, paramsMap, this::mapToDTO);
     }
 
-    public long count(FILTER filterDto) {
+    private long count(FILTER filterDto) {
         SQLPartWithParams queryWithWhereAndOrderBy = getQueryWithWhereAndOrderBy(filterDto);
         String countSql = String.format(COUNT_QUERY, queryWithWhereAndOrderBy.getSql());
 
