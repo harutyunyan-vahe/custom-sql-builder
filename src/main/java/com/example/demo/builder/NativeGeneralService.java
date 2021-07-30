@@ -3,8 +3,10 @@ package com.example.demo.builder;
 import com.example.demo.dto.PageDTO;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -28,16 +30,14 @@ public abstract class NativeGeneralService<FILTER extends QueryFilter, DTO> {
     private static boolean showSQL() {
         return true;
     }
+    public static final BeanProcessor BEAN_PROCESSOR = new BeanProcessor();
 
     private static final String COUNT_QUERY = "SELECT count(*) FROM ( %s ) sub";
     private static final String LIMIT_PART = "LIMIT :limit OFFSET :offset";
     private static final String DEFAULT_ORDER_BY = " id ";
 
-    protected final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-    public NativeGeneralService(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-    }
+    @Autowired
+    protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 
     protected abstract DTO mapToDTO(ResultSet rs, int i) throws SQLException;

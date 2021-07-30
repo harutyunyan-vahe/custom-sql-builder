@@ -3,8 +3,8 @@ package com.example.demo.service.nat;
 import com.example.demo.builder.NativeGeneralService;
 import com.example.demo.dto.CarDTO;
 import com.example.demo.service.CarFilter;
+import org.apache.commons.dbutils.BeanProcessor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;
@@ -17,17 +17,20 @@ public class CarNativeService extends NativeGeneralService<CarFilter, CarDTO> {
 
     private static final String SQL = "select * from Car c ";
 
-    public CarNativeService(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        super(namedParameterJdbcTemplate);
+
+
+    @Override//use BeanProcessor
+    protected CarDTO mapToDTO(ResultSet rs, int i) throws SQLException {
+        return BEAN_PROCESSOR.populateBean(rs, new CarDTO());
     }
 
-    @Override
-    protected CarDTO mapToDTO(ResultSet rs, int i) throws SQLException {
-        CarDTO carDTO = new CarDTO();
-        carDTO.setName(rs.getString("name"));
-        carDTO.setYear(rs.getLong("year"));
-        return carDTO;
-    }
+//    @Override// manually
+//    protected CarDTO mapToDTO(ResultSet rs, int i) throws SQLException {
+//        CarDTO carDTO = new CarDTO();
+//        carDTO.setName(rs.getString("name"));
+//        carDTO.setYear(rs.getLong("year"));
+//        return carDTO;
+//    }
 
     @Override
     protected SQLPartWithParams getWhereQuery(CarFilter filterDto) {
