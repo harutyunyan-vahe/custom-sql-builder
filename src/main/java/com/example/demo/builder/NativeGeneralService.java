@@ -236,7 +236,7 @@ public abstract class NativeGeneralService<FILTER extends QueryFilter, DTO> {
 
     }
 
-    public static String preprocessValueForFuzzySearch(String value) {
+    private static String preprocessValueForFuzzySearch(String value) {
         if (isNotEmpty(value)) {
             value = value.toLowerCase();
 
