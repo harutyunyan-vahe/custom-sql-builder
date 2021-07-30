@@ -9,7 +9,6 @@ public abstract class QueryFilter {
 
     private Integer page;
     private Integer resultsPerPage;
-    private Integer resultsCountOverride;
     private String sort;
     private Boolean ascSort;
 
