@@ -26,10 +26,7 @@ public class CarNativeService extends NativeGeneralService<CarFilter, CarDTO> {
         CarDTO carDTO = new CarDTO();
         carDTO.setName(rs.getString("name"));
         carDTO.setYear(rs.getLong("year"));
-
-
         return carDTO;
-
     }
 
     @Override
@@ -41,7 +38,6 @@ public class CarNativeService extends NativeGeneralService<CarFilter, CarDTO> {
         addAsLong(wherePartList, mapSqlParameterSource, "c.year", filterDto.getYear());
 
         return new SQLPartWithParams(wherePartList, mapSqlParameterSource);
-
     }
 
     @Override
